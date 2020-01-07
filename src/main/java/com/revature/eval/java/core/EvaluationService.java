@@ -129,8 +129,18 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getScrabbleScore(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		String alphabet = "abcdefghiklmnopqrstuvwxyz";
+		int[] scores = {1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10};
+		int length = string.length();
+		char letter;
+		int score = 0;
+		int letterIndex;
+		for (int i = 0; i < length; i++) {
+			letter = string.charAt(i);
+			letterIndex = alphabet.indexOf(letter);
+			score += scores[letterIndex];
+		}
+		return score;
 	}
 
 	/**
