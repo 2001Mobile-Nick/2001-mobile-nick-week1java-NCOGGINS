@@ -247,8 +247,19 @@ public class EvaluationService {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
+			int length = sortedList.size() -1;
+			int index = length/2;
+			String tValue = t.toString();
+			String value = sortedList.get(index).toString();
+			if(sortedList.get(index).equals(t)) {
+				return index;
+			} else if(tValue.compareTo(value) < 0) {
+				//TODO
+			} else if(tValue.compareTo(value) > 0) {
+				//TODO
+			}
 			// TODO Write an implementation for this method declaration
-			return 0;
+			return index;
 		}
 
 		public BinarySearch(List<T> sortedList) {
