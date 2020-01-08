@@ -565,8 +565,26 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isPangram(String string) {
+		String alphabet = "abcdefghijklmnopqrstuvwxyz";
+		String lowerCase = string.toLowerCase();
+		int[] count = new int[alphabet.length()];
+		boolean result = true;
+		char current;
+		int index = 0;
+		
+		for(int i = 0; i < lowerCase.length(); i ++) {
+			current = lowerCase.charAt(i);
+			index = lowerCase.indexOf(current);
+			count[index] += 1;
+		}
+		
+		for(int i = 0; i < lowerCase.length(); i ++) {
+			if(count[i] < 1) {
+				result = false;
+			}
+		}
 		// TODO Write an implementation for this method declaration
-		return false;
+		return result;
 	}
 
 	/**
