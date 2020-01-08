@@ -435,20 +435,18 @@ public class EvaluationService {
 	public int calculateNthPrime(int i) {
 		int count = 1;
 		int current = 2;
-		int prime = 2;
 		if (i < 1) {
 			return 0;
 		}
-		
-		while(count < i) {
+
+		while (count < i) {
 			current++;
-			for(int j = 2; j < current; j++) {
-				if (current%j == 0) {
+			for (int j = 2; j < current; j++) {
+				if (current % j == 0) {
 					break;
 				}
 			}
 			count++;
-			prime = current;
 		}
 		return current;
 	}
@@ -646,8 +644,31 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		String multiples = "";
+		int result = 0;
+
+		int current = 1;
+
+		if (i > 0) {
+			while ((set[0] * current) < i) {
+				multiples += set[0] * current + " ";
+				current++;
+			}
+
+			current = 1;
+
+			while ((set[1] * current) < i) {
+				multiples += set[1] * current + " ";
+				current++;
+			}
+
+			String[] numbers = multiples.split(" ");
+			for (int j = 0; i < numbers.length; j++) {
+				current = Integer.parseInt(numbers[j]);
+				result += current;
+			}
+		}
+		return result;
 	}
 
 	/**
