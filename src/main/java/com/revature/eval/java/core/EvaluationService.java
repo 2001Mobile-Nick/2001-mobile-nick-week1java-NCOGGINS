@@ -357,8 +357,8 @@ public class EvaluationService {
 	 * @return
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		List<Long> result = calculatePrimeFactorsOf(l);
+		return result;
 	}
 
 	/**
