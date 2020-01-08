@@ -397,14 +397,22 @@ public class EvaluationService {
 
 		public String rotate(String string) {
 			String alphabet = "abcdefghijklmnopqrstuvwxyz";
+			String capital = alphabet.toUpperCase();
 			String result = "";
 			char next;
 			int index;
 			for (int i = 0; i < string.length(); i++) {
 				next = string.charAt(i);
+				
+				if(alphabet.indexOf(next) != -1){
 				index = alphabet.indexOf(next);
 				index = (index + key) % 26;
 				next = alphabet.charAt(index);
+				} else if(capital.indexOf(next) != -1) { 
+					index = capital.indexOf(next);
+					index = (index + key) % 26;
+					next = capital.charAt(index);
+				}
 				result += next;
 			}
 			return result;
@@ -455,19 +463,22 @@ public class EvaluationService {
 	 */
 	static class AtbashCipher {
 		static String alphabet = "abcdefghijklmnopqrstuvwxyz";
+		static String capitalAlphabet = alphabet.toUpperCase();
 		static String reversed = alphabet;
+		static String reversedCapital;
 		static char front;
 		static char back;
 		static char temp;
 
 		static {
-			for (int i = 0; i < alphabet.length()/2; i++) {
+			for (int i = 0; i < alphabet.length() / 2; i++) {
 				front = alphabet.charAt(i);
-				back = alphabet.charAt(alphabet.length()-(i+1));
+				back = alphabet.charAt(alphabet.length() - (i));
 				temp = front;
 				reversed.replace(reversed.charAt(i), back);
-				reversed.replace(reversed.charAt(alphabet.length()-(i+1)), temp);
+				reversed.replace(reversed.charAt(alphabet.length() - (i)), temp);
 			}
+			reversedCapital = reversed.toUpperCase();
 		}
 
 		/**
@@ -479,12 +490,18 @@ public class EvaluationService {
 		public static String encode(String string) {
 			String result = "";
 			int index;
-			for(int i = 0; i < string.length(); i++) {
+			for (int i = 0; i < string.length(); i++) {
 				if (string.charAt(i) == ' ') {
+					result += ' ';
 					break;
 				} else {
-					index = alphabet.indexOf(string.charAt(i));
-					result += reversed.charAt(index); 
+					if (alphabet.indexOf(string.charAt(i)) != -1) {
+						index = alphabet.indexOf(string.charAt(i));
+						result += reversed.charAt(index);
+					} else if (capitalAlphabet.indexOf(string.charAt(i)) != -1) {
+						index = capitalAlphabet.indexOf(string.charAt(i));
+						result += reversedCapital.charAt(index);
+					}
 				}
 			}
 			return result;
@@ -499,9 +516,9 @@ public class EvaluationService {
 		public static String decode(String string) {
 			String result = "";
 			int index;
-			for(int i = 0; i < string.length(); i++) {
-					index = reversed.indexOf(string.charAt(i));
-					result += alphabet.charAt(index); 
+			for (int i = 0; i < string.length(); i++) {
+				index = reversed.indexOf(string.charAt(i));
+				result += alphabet.charAt(index);
 			}
 			return result;
 		}
@@ -533,21 +550,21 @@ public class EvaluationService {
 		String numbers = "";
 		int sum = 0;
 		boolean result = false;
-		
-		for(int i = 0; i < string.length(); i ++) {
-			if(Character.isDigit(string.charAt(i))) {
+
+		for (int i = 0; i < string.length(); i++) {
+			if (Character.isDigit(string.charAt(i))) {
 				numbers += string.charAt(i);
 			}
 		}
-		
+
 		for (int i = 0; i < numbers.length(); i++) {
-			sum += numbers.charAt(i) * (10 - i);			
+			sum += numbers.charAt(i) * (10 - i);
 		}
-		
-		if(sum % 11 == 0) {
+
+		if (sum % 11 == 0) {
 			result = true;
 		}
-		
+
 		return result;
 	}
 
@@ -571,19 +588,18 @@ public class EvaluationService {
 		boolean result = true;
 		char current;
 		int index = 0;
-		
-		for(int i = 0; i < lowerCase.length(); i ++) {
+
+		for (int i = 0; i < lowerCase.length(); i++) {
 			current = lowerCase.charAt(i);
 			index = lowerCase.indexOf(current);
 			count[index] += 1;
 		}
-		
-		for(int i = 0; i < lowerCase.length(); i ++) {
-			if(count[i] < 1) {
+
+		for (int i = 0; i < lowerCase.length(); i++) {
+			if (count[i] < 1) {
 				result = false;
 			}
 		}
-		// TODO Write an implementation for this method declaration
 		return result;
 	}
 
