@@ -454,6 +454,21 @@ public class EvaluationService {
 	 *
 	 */
 	static class AtbashCipher {
+		static String alphabet = "abcdefghijklmnopqrstuvwxyz";
+		static String reversed = alphabet;
+		static char front;
+		static char back;
+		static char temp;
+
+		static {
+			for (int i = 0; i < alphabet.length()/2; i++) {
+				front = alphabet.charAt(i);
+				back = alphabet.charAt(alphabet.length()-(i+1));
+				temp = front;
+				reversed.replace(reversed.charAt(i), back);
+				reversed.replace(reversed.charAt(alphabet.length()-(i+1)), temp);
+			}
+		}
 
 		/**
 		 * Question 13
@@ -462,8 +477,17 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String encode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			String result = "";
+			int index;
+			for(int i = 0; i < string.length(); i++) {
+				if (string.charAt(i) == ' ') {
+					break;
+				} else {
+					index = alphabet.indexOf(string.charAt(i));
+					result += reversed.charAt(index); 
+				}
+			}
+			return result;
 		}
 
 		/**
@@ -473,8 +497,13 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String decode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			String result = "";
+			int index;
+			for(int i = 0; i < string.length(); i++) {
+					index = reversed.indexOf(string.charAt(i));
+					result += alphabet.charAt(index); 
+			}
+			return result;
 		}
 	}
 
