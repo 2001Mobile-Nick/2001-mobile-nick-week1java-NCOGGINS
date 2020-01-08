@@ -396,8 +396,18 @@ public class EvaluationService {
 		}
 
 		public String rotate(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			String alphabet = "abcdefghijklmnopqrstuvwxyz";
+			String result = "";
+			char next;
+			int index;
+			for (int i = 0; i < string.length(); i++) {
+				next = string.charAt(i);
+				index = alphabet.indexOf(next);
+				index = (index + key) % 26;
+				next = alphabet.charAt(index);
+				result += next;
+			}
+			return result;
 		}
 
 	}
