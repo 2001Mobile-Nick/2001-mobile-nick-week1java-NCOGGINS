@@ -17,7 +17,7 @@ public class EvaluationService {
 	 */
 	public String reverse(String string) {
 		char[] reversed = new char[string.length()];
-		for (int i = reversed.length - 1, j=0; i >= 0; i--, j++) {
+		for (int i = reversed.length - 1, j = 0; i >= 0; i--, j++) {
 			reversed[j] = string.charAt(i);
 		}
 		return new String(reversed);
@@ -131,7 +131,7 @@ public class EvaluationService {
 	 */
 	public int getScrabbleScore(String string) {
 		String alphabet = "abcdefghiklmnopqrstuvwxyz";
-		int[] scores = {1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10};
+		int[] scores = { 1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10 };
 		int length = string.length();
 		char letter;
 		int score = 0;
@@ -179,7 +179,7 @@ public class EvaluationService {
 		int length = string.length();
 		String result = "";
 		for (int i = 0; i < length; i++) {
-			if (Character.isDigit(string.charAt(i))){
+			if (Character.isDigit(string.charAt(i))) {
 				result += string.charAt(i);
 			}
 		}
@@ -196,11 +196,11 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Map<String, Integer> wordCount(String string) {
-		 Map< String,Integer> map = new HashMap< String,Integer>();
-		 String[] words = string.split(" ");
-		 for (int i = 0; i < words.length; i++) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		String[] words = string.split(" ");
+		for (int i = 0; i < words.length; i++) {
 			if (map.containsKey(words[i])) {
-				map.put(words[i], map.get(words[i])+1);
+				map.put(words[i], map.get(words[i]) + 1);
 			} else {
 				map.put(words[i], 1);
 			}
@@ -247,16 +247,16 @@ public class EvaluationService {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
-			int length = sortedList.size() -1;
-			int index = length/2;
+			int length = sortedList.size() - 1;
+			int index = length / 2;
 			String tValue = t.toString();
 			String value = sortedList.get(index).toString();
-			if(sortedList.get(index).equals(t)) {
+			if (sortedList.get(index).equals(t)) {
 				return index;
-			} else if(tValue.compareTo(value) < 0) {
-				//TODO
-			} else if(tValue.compareTo(value) > 0) {
-				//TODO
+			} else if (tValue.compareTo(value) < 0) {
+				// TODO
+			} else if (tValue.compareTo(value) > 0) {
+				// TODO
 			}
 			// TODO Write an implementation for this method declaration
 			return index;
@@ -295,8 +295,24 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String toPigLatin(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		String vowels = "aeiouy";
+		String result = null;
+		char first = string.charAt(0);
+		for (int i = 0; i < vowels.length(); i++) {
+			if (vowels.charAt(i) == first) {
+				result = string + "ay";
+			} else {
+				for (int j = 0; j < string.length(); j++) {
+					for (int k = 0; k < vowels.length(); k++) {
+						if (vowels.charAt(k) == string.charAt(j)) {
+							String temp = string.substring(0, j);
+							result = string.substring(j) + temp + "ay";
+						}
+					}
+				}
+			}
+		}
+		return result;
 	}
 
 	/**
