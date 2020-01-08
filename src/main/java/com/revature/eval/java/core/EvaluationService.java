@@ -331,8 +331,19 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isArmstrongNumber(int input) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		String numbers = Integer.toString(input);
+		int digit;
+		int sum = 0;
+		for (int i = 0; i < numbers.length(); i++) {
+			digit = Integer.parseInt(numbers.substring(i, i + 1));
+			sum += Math.pow(digit, numbers.length());
+		}
+
+		if (sum == input) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
