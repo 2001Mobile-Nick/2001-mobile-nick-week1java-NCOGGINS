@@ -403,12 +403,12 @@ public class EvaluationService {
 			int index;
 			for (int i = 0; i < string.length(); i++) {
 				next = string.charAt(i);
-				
-				if(alphabet.indexOf(next) != -1){
-				index = alphabet.indexOf(next);
-				index = (index + key) % 26;
-				next = alphabet.charAt(index);
-				} else if(capital.indexOf(next) != -1) { 
+
+				if (alphabet.indexOf(next) != -1) {
+					index = alphabet.indexOf(next);
+					index = (index + key) % 26;
+					next = alphabet.charAt(index);
+				} else if (capital.indexOf(next) != -1) {
 					index = capital.indexOf(next);
 					index = (index + key) % 26;
 					next = capital.charAt(index);
@@ -433,8 +433,24 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int calculateNthPrime(int i) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		int count = 1;
+		int current = 2;
+		int prime = 2;
+		if (i < 1) {
+			return 0;
+		}
+		
+		while(count < i) {
+			current++;
+			for(int j = 2; j < current; j++) {
+				if (current%j == 0) {
+					break;
+				}
+			}
+			count++;
+			prime = current;
+		}
+		return current;
 	}
 
 	/**
