@@ -296,23 +296,33 @@ public class EvaluationService {
 	 */
 	public String toPigLatin(String string) {
 		String vowels = "aeiouy";
-		String result = null;
-		char first = string.charAt(0);
-		for (int i = 0; i < vowels.length(); i++) {
-			if (vowels.charAt(i) == first) {
-				result = string + "ay";
-			} else {
-				for (int j = 0; j < string.length(); j++) {
-					for (int k = 0; k < vowels.length(); k++) {
-						if (vowels.charAt(k) == string.charAt(j)) {
-							String temp = string.substring(0, j);
-							result = string.substring(j) + temp + "ay";
-						}
+		String result = "";
+		String[] words = string.split(" ");
+
+		for (int z = 0; z < words.length; z++) {
+			char first = words[z].charAt(0);
+			for (int i = 0; i < vowels.length(); i++) {
+				if (vowels.charAt(i) == first) {
+					if (words[z].substring(0, 2) == "qu") {
+						String temp = words[z].substring(0, 2);
+						result += words[z].substring(2) + temp + "ay";
+						break;
+					} else {
+						result += words[z] + "ay";
+						break;
 					}
+				} else {
+					char temp = words[z].charAt(0);
+					result += words[z].substring(1) + temp + "ay";
+					break;
 				}
+			}
+			if (words.length - 1 != z) {
+				result += " ";
 			}
 		}
 		return result;
+
 	}
 
 	/**
@@ -436,7 +446,7 @@ public class EvaluationService {
 		int count = 1;
 		int current = 2;
 		if (i < 1) {
-			return 0;
+			throw new IllegalArgumentException();
 		}
 
 		while (count < i) {
@@ -487,10 +497,10 @@ public class EvaluationService {
 		static {
 			for (int i = 0; i < alphabet.length() / 2; i++) {
 				front = alphabet.charAt(i);
-				back = alphabet.charAt(alphabet.length() - (i));
+				back = alphabet.charAt(alphabet.length() - (i + 1));
 				temp = front;
 				reversed.replace(reversed.charAt(i), back);
-				reversed.replace(reversed.charAt(alphabet.length() - (i)), temp);
+				reversed.replace(reversed.charAt(alphabet.length() - (i + 1)), temp);
 			}
 			reversedCapital = reversed.toUpperCase();
 		}
@@ -507,7 +517,6 @@ public class EvaluationService {
 			for (int i = 0; i < string.length(); i++) {
 				if (string.charAt(i) == ' ') {
 					result += ' ';
-					break;
 				} else {
 					if (alphabet.indexOf(string.charAt(i)) != -1) {
 						index = alphabet.indexOf(string.charAt(i));
@@ -740,6 +749,42 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int solveWordProblem(String string) {
+		int first = 0;
+		int second = 0;
+		char current;
+		int count = 0;
+		String temp;
+		int other;
+
+		for (int i = 0; i < string.length(); i++) {
+			if (Character.isDigit(string.charAt(i))) {
+				other = i + 1;
+				while (Character.isDigit(string.charAt(other))) {
+					other++;
+				}
+				temp = string.substring(i, other);
+				if (count == 0) {
+					first = Integer.parseInt(temp);
+				} else if (count == 1){
+					second = Integer.parseInt(temp);
+				}
+				count++;
+				i = other;
+			}
+		}
+
+		if (string.contains("plus")) {
+			return (first + second);
+
+		} else if (string.contains("minus")) {
+
+		} else if (string.contains("multiplied")) {
+
+		} else if (string.contains("divided")) {
+
+		} else {
+			System.out.println("Not a valid question.");
+		}
 		// TODO Write an implementation for this method declaration
 		return 0;
 	}
