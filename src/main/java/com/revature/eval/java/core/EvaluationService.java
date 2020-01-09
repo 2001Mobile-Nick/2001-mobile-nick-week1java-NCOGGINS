@@ -694,8 +694,8 @@ public class EvaluationService {
 			}
 
 			String[] numbers = multiples.split(" ");
-			for (int j = 0; i < numbers.length; j++) {
-				current = Integer.parseInt(numbers[j]);
+			for (int k = 0; k < numbers.length; k++) {
+				current = Integer.parseInt(numbers[k]);
 				result += current;
 			}
 		}
