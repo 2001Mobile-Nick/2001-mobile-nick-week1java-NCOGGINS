@@ -177,6 +177,11 @@ public class EvaluationService {
 	 */
 	public String cleanPhoneNumber(String string) {
 		int length = string.length();
+		
+		if(length > 11) {
+			throw new IllegalArgumentException();
+		}
+		
 		String result = "";
 		for (int i = 0; i < length; i++) {
 			if (Character.isDigit(string.charAt(i))) {
@@ -717,7 +722,31 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isLuhnValid(String string) {
-		// TODO Write an implementation for this method declaration
+		string = string.replaceAll(" ", "");
+		int temp;
+		int sum = 0;
+		int[] digits = new int[string.length()];
+		if (string.length() < 1) {
+			return false;
+		} else {
+			for (int i = string.length()-1; i >= 0; i--) {
+				if (i%2 == 0) {
+					temp = Integer.parseInt(string.substring(i, i + 1)) * 2;
+					if (temp > 9) {
+						temp -= 9;
+					}
+					digits[i] = temp;
+				} else {
+					digits[i] = Integer.parseInt(string.substring(i, i + 1));
+				}
+				for (int j = 0; j < digits.length; j++) {
+					sum += digits[j];
+				}
+				if(sum % 10 == 0) {
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
@@ -751,7 +780,6 @@ public class EvaluationService {
 	public int solveWordProblem(String string) {
 		int first = 0;
 		int second = 0;
-		char current;
 		int count = 0;
 		String temp;
 		int other;
@@ -785,19 +813,16 @@ public class EvaluationService {
 		}
 
 		if (string.contains("plus")) {
-			System.out.println(first + second);
 			return (first + second);
-
 		} else if (string.contains("minus")) {
 			return first - second;
 		} else if (string.contains("multiplied")) {
 			return first * second;
 		} else if (string.contains("divided")) {
-				return first / second;
+			return first / second;
 		} else {
 			System.out.println("Not a valid question.");
 		}
-		// TODO Write an implementation for this method declaration
 		return 0;
 	}
 
