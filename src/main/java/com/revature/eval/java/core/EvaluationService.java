@@ -528,20 +528,20 @@ public class EvaluationService {
 			int index;
 			int count = 0;
 			for (int i = 0; i < string.length(); i++) {
-					if(count == 5) {
-						result += " ";
-						count = 0;
-					}
-					if (alphabet.indexOf(string.charAt(i)) != -1) {
-						index = alphabet.indexOf(string.charAt(i));
-						result += reversed.charAt(index);
-					} else if (capitalAlphabet.indexOf(string.charAt(i)) != -1) {
-						index = capitalAlphabet.indexOf(string.charAt(i));
-						result += reversedCapital.charAt(index);
-					}
-					count++;
+				if (count == 5) {
+					result += " ";
+					count = 0;
 				}
-			
+				if (alphabet.indexOf(string.charAt(i)) != -1) {
+					index = alphabet.indexOf(string.charAt(i));
+					result += reversed.charAt(index);
+				} else if (capitalAlphabet.indexOf(string.charAt(i)) != -1) {
+					index = capitalAlphabet.indexOf(string.charAt(i));
+					result += reversedCapital.charAt(index);
+				}
+				count++;
+			}
+
 			return result;
 		}
 
@@ -628,7 +628,8 @@ public class EvaluationService {
 
 		String alphabet = "abcdefghijklmnopqrstuvwxyz";
 		String lowerCase = string.toLowerCase();
-		int[] count = new int[alphabet.length()];
+		lowerCase = lowerCase.replace(" ", "");
+		int[] count = new int[lowerCase.length()];
 		boolean result = true;
 		char current;
 		int index = 0;
