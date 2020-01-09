@@ -203,7 +203,14 @@ public class EvaluationService {
 	 */
 	public Map<String, Integer> wordCount(String string) {
 		Map<String, Integer> map = new HashMap<String, Integer>();
-		String[] words = string.split(" ");
+		String[] words = null;
+		if (string.contains("\n")) {
+			words = string.split(",\n");
+		} else if (string.contains(",")) {
+			words = string.split(",");
+		} else {
+			words = string.split(" ");
+		}
 		for (int i = 0; i < words.length; i++) {
 			if (map.containsKey(words[i])) {
 				map.put(words[i], map.get(words[i]) + 1);
