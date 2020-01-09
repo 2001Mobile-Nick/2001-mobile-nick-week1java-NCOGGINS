@@ -305,25 +305,27 @@ public class EvaluationService {
 		String result = "";
 		String[] words = string.split(" ");
 
-		for (int z = 0; z < words.length; z++) {
-			char first = words[z].charAt(0);
-			for (int i = 0; i < vowels.length(); i++) {
-				if (vowels.charAt(i) == first) {
-					if (words[z].substring(0, 2) == "qu") {
-						String temp = words[z].substring(0, 2);
-						result += words[z].substring(2) + temp + "ay";
+		for (int word = 0; word < words.length; word++) {
+			char first = words[word].charAt(0);
+			for (int vowel = 0; vowel < vowels.length(); vowel++) {
+				if (vowels.charAt(vowel) == first || first == 'q') {
+					if ((words[word].charAt(1) == 'u')) {
+						String temp = words[word].substring(2);
+						result += temp + "quay";
 						break;
 					} else {
-						result += words[z] + "ay";
+						result += words[word] + "ay";
 						break;
 					}
 				} else {
-					char temp = words[z].charAt(0);
-					result += words[z].substring(1) + temp + "ay";
-					break;
+					if (vowel + 1 == vowels.length()) {
+						char temp = words[word].charAt(0);
+						result += words[word].substring(1) + temp + "ay";
+						break;
+					}
 				}
 			}
-			if (words.length - 1 != z) {
+			if (words.length - 1 != word) {
 				result += " ";
 			}
 		}
@@ -494,23 +496,18 @@ public class EvaluationService {
 	static class AtbashCipher {
 		static String alphabet = "abcdefghijklmnopqrstuvwxyz";
 		static String capitalAlphabet = alphabet.toUpperCase();
-		static String reversed = alphabet;
+		static String reversed = "";
 		static String reversedCapital;
 		static char front;
 		static char back;
 		static char temp;
+		static String tempString;
 
 		static {
-			for (int i = 0; i < alphabet.length() / 2; i++) {
-				front = alphabet.charAt(i);
-				back = alphabet.charAt(alphabet.length() - (i + 1));
-				temp = front;
-				reversed = reversed.substring(1);
-				reversed = back + reversed;
-				reversed = reversed.substring(i, -i - 2);
-				reversed = reversed + front;
-				reversedCapital = reversed.toUpperCase();
+			for (int i = 0; i < alphabet.length(); i++) {
+				reversed += alphabet.charAt(alphabet.length() - (i + 1));
 			}
+			reversedCapital = reversed.toUpperCase();
 		}
 
 		/**
@@ -520,7 +517,6 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String encode(String string) {
-			System.out.println(reversed);
 			String result = "";
 			int index;
 			for (int i = 0; i < string.length(); i++) {
