@@ -32,6 +32,7 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
+		phrase = phrase.replaceAll("-", " ");
 		String[] words = phrase.split(" ");
 		String result = "";
 		char letter;
@@ -39,7 +40,7 @@ public class EvaluationService {
 			letter = words[i].charAt(0);
 			result += letter;
 		}
-		return result;
+		return result.toUpperCase();
 	}
 
 	/**
@@ -177,11 +178,11 @@ public class EvaluationService {
 	 */
 	public String cleanPhoneNumber(String string) {
 		int length = string.length();
-		
-		if(length > 11) {
+
+		if (length > 11) {
 			throw new IllegalArgumentException();
 		}
-		
+
 		String result = "";
 		for (int i = 0; i < length; i++) {
 			if (Character.isDigit(string.charAt(i))) {
@@ -504,10 +505,12 @@ public class EvaluationService {
 				front = alphabet.charAt(i);
 				back = alphabet.charAt(alphabet.length() - (i + 1));
 				temp = front;
-				reversed.replace(reversed.charAt(i), back);
-				reversed.replace(reversed.charAt(alphabet.length() - (i + 1)), temp);
+				reversed = reversed.substring(1);
+				reversed = back + reversed;
+				reversed = reversed.substring(i, -i - 2);
+				reversed = reversed + front;
+				reversedCapital = reversed.toUpperCase();
 			}
-			reversedCapital = reversed.toUpperCase();
 		}
 
 		/**
@@ -517,6 +520,7 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String encode(String string) {
+			System.out.println(reversed);
 			String result = "";
 			int index;
 			for (int i = 0; i < string.length(); i++) {
@@ -610,6 +614,11 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isPangram(String string) {
+		int length = string.length();
+		if (length < 1) {
+			return false;
+		}
+
 		String alphabet = "abcdefghijklmnopqrstuvwxyz";
 		String lowerCase = string.toLowerCase();
 		int[] count = new int[alphabet.length()];
@@ -729,8 +738,11 @@ public class EvaluationService {
 		if (string.length() < 1) {
 			return false;
 		} else {
-			for (int i = string.length()-1; i >= 0; i--) {
-				if (i%2 == 0) {
+			for (int i = string.length() - 1; i >= 0; i--) {
+				if (!Character.isDigit(string.charAt(i)) && (string.charAt(i) != '-')) {
+					return false;
+				}
+				if (i % 2 == 0) {
 					temp = Integer.parseInt(string.substring(i, i + 1)) * 2;
 					if (temp > 9) {
 						temp -= 9;
@@ -742,7 +754,7 @@ public class EvaluationService {
 				for (int j = 0; j < digits.length; j++) {
 					sum += digits[j];
 				}
-				if(sum % 10 == 0) {
+				if (sum % 10 == 0) {
 					return true;
 				}
 			}
