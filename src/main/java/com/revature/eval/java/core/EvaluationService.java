@@ -755,6 +755,7 @@ public class EvaluationService {
 		int count = 0;
 		String temp;
 		int other;
+		boolean negative = false;
 
 		for (int i = 0; i < string.length(); i++) {
 			if (Character.isDigit(string.charAt(i))) {
@@ -763,25 +764,36 @@ public class EvaluationService {
 					other++;
 				}
 				temp = string.substring(i, other);
+				if (string.charAt(i - 1) == '-') {
+					negative = true;
+				}
 				if (count == 0) {
 					first = Integer.parseInt(temp);
-				} else if (count == 1){
+					if (negative == true) {
+						first *= -1;
+					}
+				} else if (count == 1) {
 					second = Integer.parseInt(temp);
+					if (negative == true) {
+						second *= -1;
+					}
 				}
 				count++;
 				i = other;
+				negative = false;
 			}
 		}
 
 		if (string.contains("plus")) {
+			System.out.println(first + second);
 			return (first + second);
 
 		} else if (string.contains("minus")) {
-
+			return first - second;
 		} else if (string.contains("multiplied")) {
-
+			return first * second;
 		} else if (string.contains("divided")) {
-
+				return first / second;
 		} else {
 			System.out.println("Not a valid question.");
 		}
