@@ -552,6 +552,7 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String decode(String string) {
+			string = string.replace(" ", "");
 			String result = "";
 			int index;
 			for (int i = 0; i < string.length(); i++) {
