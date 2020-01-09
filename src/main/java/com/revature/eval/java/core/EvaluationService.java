@@ -526,10 +526,12 @@ public class EvaluationService {
 		public static String encode(String string) {
 			String result = "";
 			int index;
+			int count = 0;
 			for (int i = 0; i < string.length(); i++) {
-				if (string.charAt(i) == ' ') {
-					result += ' ';
-				} else {
+					if(count == 5) {
+						result += " ";
+						count = 0;
+					}
 					if (alphabet.indexOf(string.charAt(i)) != -1) {
 						index = alphabet.indexOf(string.charAt(i));
 						result += reversed.charAt(index);
@@ -537,8 +539,9 @@ public class EvaluationService {
 						index = capitalAlphabet.indexOf(string.charAt(i));
 						result += reversedCapital.charAt(index);
 					}
+					count++;
 				}
-			}
+			
 			return result;
 		}
 
