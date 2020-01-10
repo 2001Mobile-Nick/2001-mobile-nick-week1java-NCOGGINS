@@ -1,10 +1,12 @@
 package com.revature.eval.java.core;
 
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 public class EvaluationService {
 
@@ -131,18 +133,57 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getScrabbleScore(String string) {
-		String alphabet = "abcdefghiklmnopqrstuvwxyz";
-		int[] scores = { 1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10 };
-		int length = string.length();
-		char letter;
-		int score = 0;
-		int letterIndex;
-		for (int i = 0; i < length; i++) {
-			letter = string.charAt(i);
-			letterIndex = alphabet.indexOf(letter);
-			score += scores[letterIndex];
+		string = string.toLowerCase();
+		char current;
+		int result = 0;
+		for (int i = 0; i < string.length(); i++) {
+			current = string.charAt(i);
+			switch (current) {
+			case 'a':
+			case 'e':
+			case 'i':
+			case 'l':
+			case 'n':
+			case 'o':
+			case 'r':
+			case 's':
+			case 't':
+			case 'u':
+				result += 1;
+				break;
+			case 'd':
+			case 'g':
+				result += 2;
+				break;
+			case 'b':
+			case 'c':
+			case 'm':
+			case 'p':
+				result += 3;
+				break;
+			case 'f':
+			case 'h':
+			case 'v':
+			case 'w':
+			case 'y':
+				result += 4;
+				break;
+			case 'k':
+				result += 5;
+				break;
+			case 'j':
+			case 'x':
+				result += 8;
+				break;
+			case 'q':
+			case 'z':
+				result += 10;
+				break;
+			default:
+				break;
+			}
 		}
-		return score;
+		return result;
 	}
 
 	/**
@@ -177,6 +218,9 @@ public class EvaluationService {
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
 	public String cleanPhoneNumber(String string) {
+		string = string.replace(" ", "");
+		string = string.replace("(", "");
+		string = string.replace(")", "");
 		int length = string.length();
 
 		if (length > 11) {
@@ -256,20 +300,22 @@ public class EvaluationService {
 	 * binary search is a dichotomic divide and conquer search algorithm.
 	 * 
 	 */
-	static class BinarySearch<T> {
+	static class BinarySearch<T extends Comparable<T>> {
 		private List<T> sortedList;
 
+		@SuppressWarnings("unchecked")
 		public int indexOf(T t) {
 			int length = sortedList.size() - 1;
 			int index = length / 2;
-			String tValue = t.toString();
-			String value = sortedList.get(index).toString();
-			if (sortedList.get(index).equals(t)) {
+			List<T> tempList = null;
+			if (sortedList.get(index).equals(t) == true) {
 				return index;
-			} else if (tValue.compareTo(value) < 0) {
-				// TODO
-			} else if (tValue.compareTo(value) > 0) {
-				// TODO
+			} else if (sortedList.get(index).compareTo(t) < 0) {
+				tempList.add((T) sortedList.subList(0, index));
+			} else if (sortedList.get(index).compareTo(t) > 0) {
+				tempList.add((T) sortedList.subList(index + 1, sortedList.size() - 1));
+				setSortedList(tempList);
+				indexOf(t);
 			}
 			// TODO Write an implementation for this method declaration
 			return index;
@@ -308,17 +354,26 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String toPigLatin(String string) {
-		String vowels = "aeiouy";
+		String vowels = "aeiou";
 		String result = "";
 		String[] words = string.split(" ");
+		String temp;
 
 		for (int word = 0; word < words.length; word++) {
 			char first = words[word].charAt(0);
 			for (int vowel = 0; vowel < vowels.length(); vowel++) {
-				if (vowels.charAt(vowel) == first || first == 'q') {
+				if (vowels.charAt(vowel) == first || first == 'q' || first == 's' || first == 't') {
 					if ((words[word].charAt(1) == 'u')) {
-						String temp = words[word].substring(2);
+						temp = words[word].substring(2);
 						result += temp + "quay";
+						break;
+					} else if (words[word].charAt(1) == 'c') {
+						temp = words[word].substring(3);
+						result += temp + "schay";
+						break;
+					} else if ((words[word].charAt(1) == 'h')) {
+						temp = words[word].substring(2);
+						result += temp + "thay";
 						break;
 					} else {
 						result += words[word] + "ay";
@@ -326,8 +381,8 @@ public class EvaluationService {
 					}
 				} else {
 					if (vowel + 1 == vowels.length()) {
-						char temp = words[word].charAt(0);
-						result += words[word].substring(1) + temp + "ay";
+						char tempch = words[word].charAt(0);
+						result += words[word].substring(1) + tempch + "ay";
 						break;
 					}
 				}
@@ -382,7 +437,20 @@ public class EvaluationService {
 	 * @return
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
-		List<Long> result = calculatePrimeFactorsOf(l);
+		List<Long> result = new ArrayList<Long>();
+		while (l % 2 == 0) {
+			result.add((long) 2);
+			l /= 2;
+		}
+		for (long i = 3; i <= l / i; i += 2) {
+			while (l % i == 0) {
+				l /= i;
+				result.add(i);
+			}
+		}
+		if (l > 2) {
+			result.add(l);
+		}
 		return result;
 	}
 
@@ -465,13 +533,19 @@ public class EvaluationService {
 		}
 
 		while (count < i) {
+			boolean prime = true;
 			current++;
 			for (int j = 2; j < current; j++) {
 				if (current % j == 0) {
+					prime = false;
 					break;
 				}
+
 			}
-			count++;
+			if (prime) {
+				count++;
+			}
+
 		}
 		return current;
 	}
@@ -528,10 +602,6 @@ public class EvaluationService {
 			int index;
 			int count = 0;
 			for (int i = 0; i < string.length(); i++) {
-				if (count == 5) {
-					result += " ";
-					count = 0;
-				}
 				if (alphabet.indexOf(string.charAt(i)) != -1) {
 					index = alphabet.indexOf(string.charAt(i));
 					result += reversed.charAt(index);
@@ -541,8 +611,8 @@ public class EvaluationService {
 				}
 				count++;
 			}
-
-			return result;
+			result = result.replaceAll("(.{" + "5" + "})", "$1 ").trim();
+			return result.toLowerCase();
 		}
 
 		/**
@@ -593,11 +663,21 @@ public class EvaluationService {
 		for (int i = 0; i < string.length(); i++) {
 			if (Character.isDigit(string.charAt(i))) {
 				numbers += string.charAt(i);
+			} else if (string.charAt(i) == 'X') {
+				numbers += string.charAt(i);
 			}
+		}
+		if (numbers.length() != 10) {
+			return false;
 		}
 
 		for (int i = 0; i < numbers.length(); i++) {
-			sum += numbers.charAt(i) * (10 - i);
+			if (Character.isDigit(numbers.charAt(i))) {
+				sum += numbers.charAt(i) * (10 - i);
+			} else {
+				sum += 3;
+			}
+
 		}
 
 		if (sum % 11 == 0) {
@@ -621,31 +701,16 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isPangram(String string) {
-		int length = string.length();
-		if (length < 1) {
+		Map<String, Integer> map = new HashMap<>();
+		String[] words = string.replaceAll(" ", "").split("");
+		for (String i : words) {
+			map.merge(i, 1, (a, b) -> a + b);
+		}
+		if (map.size() == 26) {
+			return true;
+		} else {
 			return false;
 		}
-
-		String alphabet = "abcdefghijklmnopqrstuvwxyz";
-		String lowerCase = string.toLowerCase();
-		lowerCase = lowerCase.replace(" ", "");
-		int[] count = new int[lowerCase.length()];
-		boolean result = true;
-		char current;
-		int index = 0;
-
-		for (int i = 0; i < lowerCase.length(); i++) {
-			current = lowerCase.charAt(i);
-			index = lowerCase.indexOf(current);
-			count[index] += 1;
-		}
-
-		for (int i = 0; i < lowerCase.length(); i++) {
-			if (count[i] < 1) {
-				result = false;
-			}
-		}
-		return result;
 	}
 
 	/**
@@ -657,8 +722,7 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		return given.plus(1000000000, ChronoUnit.SECONDS);
 	}
 
 	/**
@@ -675,27 +739,24 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
-		String multiples = "";
 		int result = 0;
+		ArrayList<Integer> multiples = new ArrayList<Integer>();
 
 		int current = 1;
 
 		if (i > 0) {
-			while ((set[0] * current) < i) {
-				multiples += set[0] * current + " ";
-				current++;
+			for (int j = 0; j < set.length; j++) {
+				current = 1;
+				while ((set[j] * current) < i) {
+					if (!multiples.contains(set[j] * current)) {
+						multiples.add(set[j] * current);
+					}
+					current++;
+				}
 			}
 
-			current = 1;
-
-			while ((set[1] * current) < i) {
-				multiples += set[1] * current + " ";
-				current++;
-			}
-
-			String[] numbers = multiples.split(" ");
-			for (int k = 0; k < numbers.length; k++) {
-				current = Integer.parseInt(numbers[k]);
+			for (int k = 0; k < multiples.size(); k++) {
+				current = multiples.get(k);
 				result += current;
 			}
 		}
@@ -743,7 +804,9 @@ public class EvaluationService {
 		int temp;
 		int sum = 0;
 		int[] digits = new int[string.length()];
-		if (string.length() < 1) {
+		if (string.length() <= 1) {
+			return false;
+		} else if (string.contains("-")) {
 			return false;
 		} else {
 			for (int i = string.length() - 1; i >= 0; i--) {
