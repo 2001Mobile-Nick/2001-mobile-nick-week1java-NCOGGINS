@@ -223,6 +223,7 @@ public class EvaluationService {
 		string = string.replace(" ", "");
 		string = string.replace("(", "");
 		string = string.replace(")", "");
+		string = string.replace(".", "");
 		int length = string.length();
 
 		if (length > 11) {
