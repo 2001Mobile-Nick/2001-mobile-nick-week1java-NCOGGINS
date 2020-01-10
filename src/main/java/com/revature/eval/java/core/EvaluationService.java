@@ -610,6 +610,8 @@ public class EvaluationService {
 				} else if (capitalAlphabet.indexOf(string.charAt(i)) != -1) {
 					index = capitalAlphabet.indexOf(string.charAt(i));
 					result += reversedCapital.charAt(index);
+				} else if (Character.isDigit(string.charAt(i))) {
+					result += string.charAt(i);
 				}
 				count++;
 			}
@@ -628,8 +630,12 @@ public class EvaluationService {
 			String result = "";
 			int index;
 			for (int i = 0; i < string.length(); i++) {
-				index = reversed.indexOf(string.charAt(i));
-				result += alphabet.charAt(index);
+				if (Character.isDigit(string.charAt(i))) {
+					result += string.charAt(i);
+				} else {
+					index = reversed.indexOf(string.charAt(i));
+					result += alphabet.charAt(index);
+				}
 			}
 			return result;
 		}
