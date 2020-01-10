@@ -814,34 +814,28 @@ public class EvaluationService {
 		string = string.replaceAll(" ", "");
 		int temp;
 		int sum = 0;
-		int[] digits = new int[string.length()];
-		if (string.length() <= 1) {
-			return false;
-		} else if (string.contains("-")) {
+		if (string.length() <= 1 || string.contains("-")) {
 			return false;
 		} else {
 			for (int i = string.length() - 1; i >= 0; i--) {
-				if (!Character.isDigit(string.charAt(i)) && (string.charAt(i) != '-')) {
+				if (!Character.isDigit(string.charAt(i))) {
 					return false;
 				}
+				temp = Integer.parseInt(string.substring(i, i + 1));
 				if (i % 2 == 0) {
-					temp = Integer.parseInt(string.substring(i, i + 1)) * 2;
+					temp *= 2;
 					if (temp > 9) {
 						temp -= 9;
 					}
-					digits[i] = temp;
-				} else {
-					digits[i] = Integer.parseInt(string.substring(i, i + 1));
 				}
-				for (int j = 0; j < digits.length; j++) {
-					sum += digits[j];
-				}
-				if (sum % 10 == 0) {
-					return true;
-				}
+				sum += temp;
+			}
+			if (sum % 10 == 0) {
+				return true;
+			} else {
+				return false;
 			}
 		}
-		return false;
 	}
 
 	/**
