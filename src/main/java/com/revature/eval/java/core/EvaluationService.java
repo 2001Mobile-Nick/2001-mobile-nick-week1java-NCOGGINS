@@ -310,18 +310,16 @@ public class EvaluationService {
 		public int indexOf(T t) {
 			int length = sortedList.size() - 1;
 			int index = length / 2;
-			List<T> tempList = null;
 			if (sortedList.get(index).equals(t) == true) {
 				return index;
-			} else if (sortedList.get(index).compareTo(t) < 0) {
-				tempList.add((T) sortedList.subList(0, index));
 			} else if (sortedList.get(index).compareTo(t) > 0) {
-				tempList.add((T) sortedList.subList(index + 1, sortedList.size() - 1));
-				setSortedList(tempList);
-				indexOf(t);
+				setSortedList(sortedList.subList(0, index));
+				return indexOf(t);
+			} else if (sortedList.get(index).compareTo(t) < 0) {
+				setSortedList(sortedList.subList(index + 1, sortedList.size()));
+				return indexOf(t);
 			}
-			// TODO Write an implementation for this method declaration
-			return index;
+			return -1;
 		}
 
 		public BinarySearch(List<T> sortedList) {
