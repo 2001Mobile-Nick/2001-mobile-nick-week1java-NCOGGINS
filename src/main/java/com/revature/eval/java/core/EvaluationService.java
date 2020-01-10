@@ -305,18 +305,25 @@ public class EvaluationService {
 	 */
 	static class BinarySearch<T extends Comparable<T>> {
 		private List<T> sortedList;
+		int offset = 0;
+		int greater = 0;
 
 		@SuppressWarnings("unchecked")
 		public int indexOf(T t) {
 			int length = sortedList.size() - 1;
 			int index = length / 2;
-			if (sortedList.get(index).equals(t) == true) {
+			if (sortedList.get(index).equals(t)) {
+				if (greater > 0) {
+					return index + offset + greater;
+				}
 				return index;
 			} else if (sortedList.get(index).compareTo(t) > 0) {
 				setSortedList(sortedList.subList(0, index));
 				return indexOf(t);
 			} else if (sortedList.get(index).compareTo(t) < 0) {
+				greater ++;
 				setSortedList(sortedList.subList(index + 1, sortedList.size()));
+				offset += index;
 				return indexOf(t);
 			}
 			return -1;
@@ -814,6 +821,7 @@ public class EvaluationService {
 		string = string.replaceAll(" ", "");
 		int temp;
 		int sum = 0;
+		int count = 0;
 		if (string.length() <= 1 || string.contains("-")) {
 			return false;
 		} else {
@@ -822,7 +830,8 @@ public class EvaluationService {
 					return false;
 				}
 				temp = Integer.parseInt(string.substring(i, i + 1));
-				if (i % 2 == 0) {
+				count++;
+				if (count % 2 == 0) {
 					temp *= 2;
 					if (temp > 9) {
 						temp -= 9;
